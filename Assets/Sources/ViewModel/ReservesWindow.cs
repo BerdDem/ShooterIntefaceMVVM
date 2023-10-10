@@ -6,6 +6,14 @@ namespace Sources.ViewModel
 {
     public class ReservesWindow : MonoBehaviour
     {
+        public enum CurrencyType
+        {
+            Coin,
+            Credit
+        }
+
+        [SerializeField] private PurchaseProcessWindow _purchaseProcessWindow;
+        
         private readonly IntProperty _medPackCount = new();
         private readonly IntProperty _armorPlateCount = new();
         
@@ -29,6 +37,38 @@ namespace Sources.ViewModel
         public void Hide()
         {
             gameObject.SetActive(false);
+        }
+
+        public void PurchaseMedPack(int resourceIndex)
+        {
+            CurrencyType currencyType = (CurrencyType) resourceIndex;
+
+            if (currencyType == CurrencyType.Coin)
+            {
+                GameModel.BuyConsumableForGold(GameModel.ConsumableTypes.Medpack);
+            }
+            else
+            {
+                GameModel.BuyConsumableForSilver(GameModel.ConsumableTypes.Medpack);
+            }
+            
+            _purchaseProcessWindow.Show();
+        }
+
+        public void PurchaseArmorPlate(int resourceIndex)
+        {
+            CurrencyType currencyType = (CurrencyType) resourceIndex;
+
+            if (currencyType == CurrencyType.Coin)
+            {
+                GameModel.BuyConsumableForGold(GameModel.ConsumableTypes.ArmorPlate);
+            }
+            else
+            {
+                GameModel.BuyConsumableForSilver(GameModel.ConsumableTypes.ArmorPlate);
+            }
+            
+            _purchaseProcessWindow.Show();
         }
         
         private void OnModelChange()
